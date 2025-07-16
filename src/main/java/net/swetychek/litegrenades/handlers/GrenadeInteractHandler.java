@@ -1,10 +1,7 @@
 package net.swetychek.litegrenades.handlers;
 
 import net.swetychek.litegrenades.Main;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.entity.TNTPrimed;
@@ -60,6 +57,8 @@ public class GrenadeInteractHandler implements Listener {
                             if (explosion_on_collision) { tnt.setFuseTicks(0); }
                             cancel();
                             return;
+                        } else if (tnt.isDead()) {
+                            grenade.remove();
                         }
 
                         tnt.teleport(grenade.getLocation());

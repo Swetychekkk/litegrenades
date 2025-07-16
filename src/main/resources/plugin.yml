@@ -1,8 +1,8 @@
 name: LiteGrenades
-version: 2.0
+version: 2.3
 api-version: 1.21.5
 main: net.swetychek.litegrenades.Main
 commands:
   litegrenades:
     description: Restore config to default values
-    usage: /<litegrenades> <help|reload|restore>
+    usage: /<litegrenades> <help|give|reload|restore>

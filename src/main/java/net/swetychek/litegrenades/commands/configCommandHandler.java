@@ -18,7 +18,7 @@ public class configCommandHandler implements CommandExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
 
         if (args.length == 0) {
-            commandSender.sendMessage( ChatColor.BLUE + "[Lite" + ChatColor.RED + "Grenades] " + ChatColor.WHITE + "Use /litegrenades restore to restore default config values /litegrenades reload to reload config file");
+            tellguide(commandSender);
             return true;
         }
 
@@ -28,26 +28,47 @@ public class configCommandHandler implements CommandExecutor {
                 Main.getInstance().getConfig().set("cooldown_in_creative", false);
                 Main.getInstance().getConfig().set("explosion_on_collision", false);
                 Main.getInstance().getConfig().set("tnt_timer", 80);
+                commandSender.sendMessage(String.valueOf(Main.getInstance().getConfig().get("tnt_timer")));
+                Main.getInstance().saveConfig();
                 break;
             case "reload":
                 Main.getInstance().reloadConfig();
                 break;
             case "help":
                 if (!(commandSender instanceof Player)) { return true; }
-                commandSender.sendMessage( ChatColor.BLUE + "[Lite" + ChatColor.RED + "Grenades] " + ChatColor.WHITE + "Use /litegrenades restore to restore default config values /litegrenades reload to reload config file");
+                tellguide(commandSender);
                 break;
             case "give":
                 if (!(commandSender instanceof Player player)) { return true; }
-                ItemStack grenadeItem = new ItemStack(Material.RED_CANDLE);
-                ItemMeta grenadeMeta= grenadeItem.getItemMeta();
+                if (args.length == 2) {
+                    try {
+                        int number = Integer.parseInt(args[1]);
+                        addGrenade(player, number);
+                        return true;
+                    } catch (NumberFormatException e) {
+                        player.sendMessage(ChatColor.RED + "Second argument must be instanceof INTEGER");
+                    }
+                } else {
+                    addGrenade(player, 1);
+                }
 
-                NamespacedKey uniqueId = new NamespacedKey(Main.getInstance(), "is_tnt_grenade");
-                grenadeMeta.setDisplayName(ChatColor.RED + "TNT");
-                grenadeMeta.getPersistentDataContainer().set(uniqueId, PersistentDataType.BOOLEAN, true);
-                grenadeItem.setItemMeta(grenadeMeta);
-                player.getInventory().addItem(grenadeItem);
                 break;
         }
         return true;
+    }
+
+    public void addGrenade(Player player, int number) {
+        ItemStack grenadeItem = new ItemStack(Material.RED_CANDLE, number);
+        ItemMeta grenadeMeta= grenadeItem.getItemMeta();
+
+        NamespacedKey uniqueId = new NamespacedKey(Main.getInstance(), "is_tnt_grenade");
+        grenadeMeta.setDisplayName(ChatColor.RED + "TNT");
+        grenadeMeta.getPersistentDataContainer().set(uniqueId, PersistentDataType.BOOLEAN, true);
+        grenadeItem.setItemMeta(grenadeMeta);
+        player.getInventory().addItem(grenadeItem);
+    }
+
+    public void tellguide(CommandSender commandSender) {
+        commandSender.sendMessage( ChatColor.BLUE + "[Lite" + ChatColor.RED + "Grenades]\n" + ChatColor.WHITE + "Use " + ChatColor.YELLOW +"/litegrenades restore" + ChatColor.WHITE + " to restore default config values\nUse " + ChatColor.YELLOW + "/litegrenades reload" + ChatColor.WHITE + " to reload config file\nUse" + ChatColor.YELLOW + "/litegrenades give {number}" + ChatColor.WHITE + " to reload config file");
     }
 }
