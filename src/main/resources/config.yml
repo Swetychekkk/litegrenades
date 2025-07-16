@@ -1,0 +1,4 @@
+cooldown: 60
+cooldown_in_creative: false
+explosion_on_collision: false
+tnt_timer: 80

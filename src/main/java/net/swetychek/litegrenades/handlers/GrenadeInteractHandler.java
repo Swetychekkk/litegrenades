@@ -30,14 +30,17 @@ public class GrenadeInteractHandler implements Listener {
             Player player = (Player) event.getPlayer();
             ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
             ItemMeta itemInMainHand_meta = itemInMainHand.getItemMeta();
+            int cooldown = plugin.getConfig().getInt("cooldown");
+            boolean cooldown_in_creative = plugin.getConfig().getBoolean("cooldown_in_creative");
+            int tnt_timer = plugin.getConfig().getInt("tnt_timer");
 
 
             NamespacedKey uniqueId = new NamespacedKey(plugin, "is_tnt_grenade");
 
             if (itemInMainHand.getType().equals(Material.RED_CANDLE) && !player.hasCooldown(itemInMainHand) && itemInMainHand_meta.getPersistentDataContainer().has(uniqueId, PersistentDataType.BOOLEAN) && itemInMainHand_meta.getPersistentDataContainer().get(uniqueId, PersistentDataType.BOOLEAN).equals(Boolean.TRUE)) {
                 if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {event.setCancelled(true);} else {player.swingMainHand();}
-                if (!player.getGameMode().equals(GameMode.CREATIVE)) {
-                    player.setCooldown(itemInMainHand, 60);
+                if (!player.getGameMode().equals(GameMode.CREATIVE) || cooldown_in_creative) {
+                    player.setCooldown(itemInMainHand, cooldown);
                     itemInMainHand.setAmount(itemInMainHand.getAmount()-1);
                 }
                 Snowball grenade = player.launchProjectile(Snowball.class);
@@ -45,7 +48,7 @@ public class GrenadeInteractHandler implements Listener {
                 grenade.setCustomName("tnt_grenade");
 
                 TNTPrimed tnt = player.getWorld().spawn(grenade.getLocation(), TNTPrimed.class);
-                tnt.setFuseTicks(80);
+                tnt.setFuseTicks(tnt_timer);
                 tnt.setSilent(true);
 
                 // Трекер
@@ -53,7 +56,8 @@ public class GrenadeInteractHandler implements Listener {
                     @Override
                     public void run() {
                         if (!grenade.isValid() || grenade.isDead()) {
-//                            tnt.setFuseTicks(0);
+                            boolean explosion_on_collision = plugin.getConfig().getBoolean("explosion_on_collision");
+                            if (explosion_on_collision) { tnt.setFuseTicks(0); }
                             cancel();
                             return;
                         }
