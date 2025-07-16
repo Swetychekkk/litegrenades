@@ -1,4 +1,4 @@
 name: LiteGrenades
 version: 1.0
-api-version: 1.19
+api-version: 1.21.5
 main: net.swetychek.litegrenades.Main
