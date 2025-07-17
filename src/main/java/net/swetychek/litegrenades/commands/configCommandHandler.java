@@ -16,6 +16,7 @@ import org.bukkit.plugin.Plugin;
 public class configCommandHandler implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
+        if (commandSender instanceof Player && !commandSender.isOp()) { commandSender.sendMessage(ChatColor.RED + "No permission"); return true; }
 
         if (args.length == 0) {
             tellguide(commandSender);
@@ -28,7 +29,6 @@ public class configCommandHandler implements CommandExecutor {
                 Main.getInstance().getConfig().set("cooldown_in_creative", false);
                 Main.getInstance().getConfig().set("explosion_on_collision", false);
                 Main.getInstance().getConfig().set("tnt_timer", 80);
-                commandSender.sendMessage(String.valueOf(Main.getInstance().getConfig().get("tnt_timer")));
                 Main.getInstance().saveConfig();
                 break;
             case "reload":
