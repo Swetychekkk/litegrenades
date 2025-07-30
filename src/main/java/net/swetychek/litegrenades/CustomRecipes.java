@@ -17,7 +17,7 @@ public class CustomRecipes {
 
         NamespacedKey uniqueId = new NamespacedKey(Main.getInstance(), "is_tnt_grenade");
         grenadeMeta.setDisplayName(ChatColor.RED + "TNT");
-        grenadeMeta.getPersistentDataContainer().set(uniqueId, PersistentDataType.BOOLEAN, true);
+        grenadeMeta.getPersistentDataContainer().set(uniqueId, PersistentDataType.STRING, "true");
         grenadeItem.setItemMeta(grenadeMeta);
 
         ShapelessRecipe grenadeRecipe = new ShapelessRecipe(new NamespacedKey(Main.getInstance(), "Grenade-Recipe"), grenadeItem);

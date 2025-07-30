@@ -34,11 +34,12 @@ public class GrenadeInteractHandler implements Listener {
 
             NamespacedKey uniqueId = new NamespacedKey(plugin, "is_tnt_grenade");
 
-            if (itemInMainHand.getType().equals(Material.RED_CANDLE) && !player.hasCooldown(itemInMainHand) && itemInMainHand_meta.getPersistentDataContainer().has(uniqueId, PersistentDataType.BOOLEAN) && itemInMainHand_meta.getPersistentDataContainer().get(uniqueId, PersistentDataType.BOOLEAN).equals(Boolean.TRUE)) {
+            if (itemInMainHand.getType().equals(Material.RED_CANDLE) && !player.hasCooldown(itemInMainHand.getType()) && itemInMainHand_meta.getPersistentDataContainer().has(uniqueId, PersistentDataType.STRING) && itemInMainHand_meta.getPersistentDataContainer().get(uniqueId, PersistentDataType.STRING).equals("true")) {
                 if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {event.setCancelled(true);} else {player.swingMainHand();}
                 if (!player.getGameMode().equals(GameMode.CREATIVE) || cooldown_in_creative) {
-                    player.setCooldown(itemInMainHand, cooldown);
-                    itemInMainHand.setAmount(itemInMainHand.getAmount()-1);
+                    player.setCooldown(itemInMainHand.getType(), cooldown);
+                    if (!player.getGameMode().equals(GameMode.CREATIVE)) {
+                    itemInMainHand.setAmount(itemInMainHand.getAmount()-1);}
                 }
                 Snowball grenade = player.launchProjectile(Snowball.class);
 
