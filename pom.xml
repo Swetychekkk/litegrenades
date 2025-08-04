@@ -6,11 +6,11 @@
 
     <groupId>net.swetychek.litegrenades</groupId>
     <artifactId>LiteGrenades</artifactId>
-    <version>2.3(1.19.x)</version>
+    <version>2.4(1.21.7)</version>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>23</maven.compiler.source>
+        <maven.compiler.target>23</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -27,7 +27,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.19-R0.1-SNAPSHOT</version>
+            <version>1.21.7-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -40,7 +40,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.4.2</version>
                 <configuration>
-                    <outputDirectory>C:\plugin-test\spigot\plugins</outputDirectory>
+                    <outputDirectory>C:\Users\swety\OneDrive\Документы\export-intidea</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
