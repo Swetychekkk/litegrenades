@@ -2,12 +2,11 @@ package net.swetychek.litegrenades.handlers;
 
 import net.swetychek.litegrenades.Main;
 import org.bukkit.*;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Snowball;
-import org.bukkit.entity.TNTPrimed;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -20,6 +19,14 @@ public class GrenadeInteractHandler implements Listener {
     public GrenadeInteractHandler(Main plugin) {
         this.plugin = plugin;
     }
+
+//    @EventHandler
+//    public void onExplode(EntityExplodeEvent event) {
+//        if (event.getEntity() instanceof TNTPrimed) {
+//            event.setCancelled(true); // отменяем стандартный взрыв
+//            event.getEntity().getWorld().createExplosion(event.getLocation(), 10F);
+//        }
+//    }
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
@@ -49,20 +56,29 @@ public class GrenadeInteractHandler implements Listener {
                 tnt.setFuseTicks(tnt_timer);
                 tnt.setSilent(true);
 
+                TextDisplay timer = player.getWorld().spawn(grenade.getLocation(), TextDisplay.class);
+                timer.setBillboard(Display.Billboard.CENTER);
+
                 // Трекер
+                final boolean[] timer_flag = {true};
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        if (!grenade.isValid() || grenade.isDead()) {
+                        if ((!grenade.isValid() || grenade.isDead()) && timer_flag[0]) {
                             boolean explosion_on_collision = plugin.getConfig().getBoolean("explosion_on_collision");
                             if (explosion_on_collision) { tnt.setFuseTicks(0); }
-                            cancel();
-                            return;
+//                            cancel();
+//                            return;
+                            timer_flag[0] = false;
                         } else if (tnt.isDead()) {
                             grenade.remove();
+                            timer.remove();
+                            cancel();
                         }
-
                         tnt.teleport(grenade.getLocation());
+                        double left_time = tnt.getFuseTicks()/20.0;
+                        timer.teleport(tnt.getLocation().add(0,1,0));
+                        timer.setText(String.format("%.2f", left_time));
                     }
                 }.runTaskTimer(plugin, 0L, 1L);
             }

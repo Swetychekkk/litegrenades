@@ -69,6 +69,6 @@ public class configCommandHandler implements CommandExecutor {
     }
 
     public void tellguide(CommandSender commandSender) {
-        commandSender.sendMessage( ChatColor.BLUE + "[Lite" + ChatColor.RED + "Grenades]\n" + ChatColor.WHITE + "Use " + ChatColor.YELLOW +"/litegrenades restore" + ChatColor.WHITE + " to restore default config values\nUse " + ChatColor.YELLOW + "/litegrenades reload" + ChatColor.WHITE + " to reload config file\nUse" + ChatColor.YELLOW + "/litegrenades give {number}" + ChatColor.WHITE + " to reload config file");
+        commandSender.sendMessage( ChatColor.BLUE + "[Lite" + ChatColor.RED + "Grenades b2.4017]\n" + ChatColor.WHITE + "Use " + ChatColor.YELLOW +"/litegrenades restore" + ChatColor.WHITE + " to restore default config values\nUse " + ChatColor.YELLOW + "/litegrenades reload" + ChatColor.WHITE + " to reload config file\nUse" + ChatColor.YELLOW + "/litegrenades give {number}" + ChatColor.WHITE + " to reload config file");
     }
 }
