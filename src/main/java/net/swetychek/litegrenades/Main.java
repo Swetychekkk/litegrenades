@@ -15,7 +15,7 @@ public class Main extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new GrenadeInteractHandler(this), this);
         getServer().getPluginCommand("litegrenades").setExecutor(new configCommandHandler());
         getServer().getPluginCommand("litegrenades").setTabCompleter(new litegrenadesTabCompleter());
-        CustomRecipes.register();
+        CustomRecipes.register(this);
         saveDefaultConfig();
     }
 
