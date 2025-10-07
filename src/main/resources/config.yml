@@ -6,3 +6,23 @@ tnt_timer: 80
 recipes:
   grenade_tier_one: true
   grenade_tier_two: true
+  radioactive_grenade: true
+
+rad_grenade:
+  range_modifier: 1.2
+
+crafts:
+  grenade_tier_one:
+    TNT: 1
+    CANDLE: 1
+
+  grenade_tier_two:
+    TNT: 3
+    CANDLE: 1
+
+  radioactive_grenade:
+    TNT: 4
+    CANDLE: 1
+    POISONOUS_POTATO: 1
+    ROTTEN_FLESH: 2
+    LINGERING_POTION: 1

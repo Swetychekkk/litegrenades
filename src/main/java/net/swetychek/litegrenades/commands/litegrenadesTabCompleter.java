@@ -16,7 +16,7 @@ public class litegrenadesTabCompleter implements TabCompleter {
         }else if (args.length == 2 && args[0].equalsIgnoreCase("give")) {
             return Arrays.asList("lightgrenades:grenade", "lightgrenades:tier_two");
         } else if (args.length == 3 && args[0].equalsIgnoreCase("give")) {
-            return Arrays.asList("0", "5", "10", "20", "40", "80", "120");
+            return Arrays.asList("0", "1", "2", "3", "4", "5", "6");
         }
         return new ArrayList<>();
     }

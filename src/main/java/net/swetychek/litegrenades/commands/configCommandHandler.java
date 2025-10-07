@@ -1,6 +1,7 @@
 package net.swetychek.litegrenades.commands;
 
 import net.swetychek.litegrenades.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -16,6 +17,12 @@ import org.bukkit.plugin.Plugin;
 import java.util.Objects;
 
 public class configCommandHandler implements CommandExecutor {
+    private final Main plugin;
+
+    public configCommandHandler(Main plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
         if (commandSender instanceof Player && !commandSender.isOp()) { commandSender.sendMessage(ChatColor.RED + "No permission"); return true; }
@@ -27,16 +34,38 @@ public class configCommandHandler implements CommandExecutor {
 
         switch (args[0].toLowerCase()) {
             case "restore":
-                Main.getInstance().getConfig().set("cooldown", 60);
-                Main.getInstance().getConfig().set("cooldown_in_creative", false);
-                Main.getInstance().getConfig().set("explosion_on_collision", false);
-                Main.getInstance().getConfig().set("tnt_timer", 80);
-                Main.getInstance().getConfig().set("recipes.grenade_tier_one", true);
-                Main.getInstance().getConfig().set("recipes.grenade_tier_two", true);
-                Main.getInstance().saveConfig();
+                if (commandSender instanceof Player) {
+                    commandSender.sendMessage(ChatColor.GREEN + "---Task completed---");
+                }
+                Bukkit.getLogger().info("----Reset config----");
+                plugin.getConfig().set("cooldown", 60);
+                Bukkit.getLogger().info("cooldown reset");
+                plugin.getConfig().set("cooldown_in_creative", false);
+                Bukkit.getLogger().info("cooldown_in_creative reset");
+                plugin.getConfig().set("explosion_on_collision", false);
+                Bukkit.getLogger().info("explosion_on_collision reset");
+                plugin.getConfig().set("tnt_timer", 80);
+                Bukkit.getLogger().info("tnt_timer reset");
+                plugin.getConfig().set("recipes.grenade_tier_one", true);
+                Bukkit.getLogger().info("recipes.grenade_tier_one reset");
+                plugin.getConfig().set("recipes.grenade_tier_two", true);
+                Bukkit.getLogger().info("recipes.grenade_tier_two reset");
+                plugin.getConfig().set("rad_grenade.range_modifier", 1.2);
+                Bukkit.getLogger().info("recipes.grenade_tier_two reset");
+                Bukkit.getLogger().info("Reference created");
+                Bukkit.getLogger().info("Saving config...");
+                plugin.saveConfig();
+                Bukkit.getLogger().info("Saving success");
+                Bukkit.getLogger().info("---Task completed---");
                 break;
             case "reload":
                 Main.getInstance().reloadConfig();
+                if (commandSender instanceof Player) {
+                    commandSender.sendMessage(ChatColor.YELLOW + "Reloading success");
+                }
+                Bukkit.getLogger().info("-----Reloading------");
+                Bukkit.getLogger().info("Reloading success");
+                Bukkit.getLogger().info("---Task completed---");
                 break;
             case "help":
                 if (!(commandSender instanceof Player)) { return true; }
@@ -44,10 +73,12 @@ public class configCommandHandler implements CommandExecutor {
                 break;
             case "give":
                 if (!(commandSender instanceof Player player)) { return true; }
-                if (args.length == 3) {
+                if (args.length >= 2 && args.length <= 3) {
                     try {
-                        int number = Integer.parseInt(args[2]);
+                        int number = 1;
+                        if (args.length == 3) { number = Integer.parseInt(args[2]); }
                         addGrenade(player, args[1], number);
+                        commandSender.sendMessage("Gave " + number + " [" + args[1]+"] to " + ((Player) commandSender).getDisplayName());
                         return true;
                     } catch (NumberFormatException e) {
                         player.sendMessage(ChatColor.RED + "Second argument must be instanceof INTEGER");

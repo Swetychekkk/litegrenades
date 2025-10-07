@@ -11,12 +11,13 @@ public class Main extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
+        reloadConfig();
         getServer().getLogger().info("[Lite-Grenades]: Plugin Enabled");
         getServer().getPluginManager().registerEvents(new GrenadeInteractHandler(this), this);
-        getServer().getPluginCommand("litegrenades").setExecutor(new configCommandHandler());
+        getServer().getPluginCommand("litegrenades").setExecutor(new configCommandHandler(this));
         getServer().getPluginCommand("litegrenades").setTabCompleter(new litegrenadesTabCompleter());
         CustomRecipes.register(this);
-        saveDefaultConfig();
     }
 
     @Override

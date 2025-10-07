@@ -1,3 +1,10 @@
+//3.1 βeta for 1.21.9
+//BY SWETYCHEK WITH ❤️
+//HELP ME TO MAKE THIS MOD BETTER https://github.com/Swetychekkk/litegrenades/issues
+
+//FILEINFO:
+//GRENADE INTERACTION HANDLER
+
 package net.swetychek.litegrenades.handlers;
 
 import net.swetychek.litegrenades.Main;
@@ -11,40 +18,60 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Transformation;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+//CLASS
 public class GrenadeInteractHandler implements Listener {
     private final Main plugin;
 
     public GrenadeInteractHandler(Main plugin) {
         this.plugin = plugin;
-    }
+    } //INTRODUCE PLUGIN REFERENCE
 
+    //ENTITY EXPLOSION EVENT HANDLER (CUSTOM RANGE AND EFFECTS)
     @EventHandler
     public void onExplode(EntityExplodeEvent event) {
         if (event.getEntity() instanceof TNTPrimed tnt) {
             NamespacedKey key = new NamespacedKey(plugin, "TYPE");
+
+            //CHECK IF THIS PLUGIN GRENADE
             if (tnt.getPersistentDataContainer().has(key, PersistentDataType.INTEGER)) {
-                int multiplier = tnt.getPersistentDataContainer().get(key, PersistentDataType.INTEGER);
+                int multiplier = tnt.getPersistentDataContainer().get(key, PersistentDataType.INTEGER); //EXPLOSION RANGE MULTIPLIER
                 event.setCancelled(true);
-                tnt.getWorld().createExplosion(tnt.getLocation(), 4F * multiplier);
+                tnt.getWorld().createExplosion(tnt.getLocation(), 4F * multiplier); //CUSTOM EXPLOSION
+                //RADIOACTIVE TNT HANDLER
+                if (multiplier == 4) {
+                    Location loc = event.getLocation();
+
+                    for (double y = -4; y <= 6; y += 2) {
+                        Location cloudLoc = loc.clone().add(0, y, 0);
+                        AreaEffectCloud cloud = (AreaEffectCloud) loc.getWorld().spawnEntity(cloudLoc, EntityType.AREA_EFFECT_CLOUD);
+
+                        cloud.setRadius((float) (4.0F*multiplier*plugin.getConfig().getDouble("rad_grenade.range_modifier")));
+                        cloud.setDuration(200);
+                        cloud.setColor(Color.GREEN);
+
+                        cloud.addCustomEffect(new PotionEffect(PotionEffectType.WITHER, 200, 8), true);
+                    }
+                }
             }
-//            if ("TYPE".equals(tnt.getPersistentDataContainer().get(key, PersistentDataType.STRING))) {
-//                event.setCancelled(true); // отменяем стандартный взрыв
-//                tnt.getWorld().createExplosion(tnt.getLocation(), 10F); // кастомный взрыв
-//            }
         }
     }
 
+    //RIGHT CLICK EVENT
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             Player player = (Player) event.getPlayer();
             ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
             ItemMeta itemInMainHand_meta = itemInMainHand.getItemMeta();
+
+            //GETTING CONFIG
             int cooldown = plugin.getConfig().getInt("cooldown");
             boolean cooldown_in_creative = plugin.getConfig().getBoolean("cooldown_in_creative");
             int tnt_timer = plugin.getConfig().getInt("tnt_timer");
@@ -52,14 +79,12 @@ public class GrenadeInteractHandler implements Listener {
 
             NamespacedKey uniqueId = new NamespacedKey(plugin, "is_tnt_grenade");
 
+            //IF NOT COOLDOWN AND ITEM IN HAND HAS GRENADE FLAG
             if (!player.hasCooldown(itemInMainHand.getType()) && itemInMainHand_meta.getPersistentDataContainer().has(uniqueId, PersistentDataType.BOOLEAN) && itemInMainHand_meta.getPersistentDataContainer().get(uniqueId, PersistentDataType.BOOLEAN).equals(true)) {
                 if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {event.setCancelled(true);} else {player.swingMainHand();}
-                if (!player.getGameMode().equals(GameMode.CREATIVE) || cooldown_in_creative) {
-                    player.setCooldown(itemInMainHand.getType(), cooldown);
-                    if (!player.getGameMode().equals(GameMode.CREATIVE)) {
-                    itemInMainHand.setAmount(itemInMainHand.getAmount()-1);}
-                }
                 int type = 0;
+
+                //POWER BY COUNT
                 switch (itemInMainHand.getType()) {
                     case Material.RED_CANDLE:
                         type=1;
@@ -67,6 +92,15 @@ public class GrenadeInteractHandler implements Listener {
                     case  Material.ORANGE_CANDLE:
                         type=3;
                         break;
+                    case  Material.GREEN_CANDLE:
+                        type = 4;
+                }
+
+                //MAKING COOLDOWN
+                if (!player.getGameMode().equals(GameMode.CREATIVE) || cooldown_in_creative) {
+                    player.setCooldown(itemInMainHand.getType(), cooldown*type); //DYNAMIC COOLDOWN
+                    if (!player.getGameMode().equals(GameMode.CREATIVE)) {
+                    itemInMainHand.setAmount(itemInMainHand.getAmount()-1);}
                 }
                 Snowball grenade = player.launchProjectile(Snowball.class);
 
@@ -81,7 +115,6 @@ public class GrenadeInteractHandler implements Listener {
                 TextDisplay timer = player.getWorld().spawn(grenade.getLocation(), TextDisplay.class);
                 timer.setBillboard(Display.Billboard.CENTER);
 
-                // Трекер
                 final boolean[] timer_flag = {true};
                 new BukkitRunnable() {
                     @Override
