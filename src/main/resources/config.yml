@@ -3,11 +3,6 @@ cooldown_in_creative: false
 explosion_on_collision: false
 tnt_timer: 80
 
-recipes:
-  grenade_tier_one: true
-  grenade_tier_two: true
-  radioactive_grenade: true
-
 rad_grenade:
   range_modifier: 1.2
 

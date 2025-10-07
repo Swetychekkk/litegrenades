@@ -40,7 +40,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.4.2</version>
                 <configuration>
-                    <outputDirectory>C:\plugin-test\spigot\plugins</outputDirectory>
+                    <outputDirectory>C:\Users\swety\OneDrive\Документы\export-intidea</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
