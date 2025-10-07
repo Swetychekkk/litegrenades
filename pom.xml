@@ -6,7 +6,7 @@
 
     <groupId>net.swetychek.litegrenades</groupId>
     <artifactId>LiteGrenades</artifactId>
-    <version>3.1(1.21.9)</version>
+    <version>3.2(1.21.9)</version>
 
     <properties>
         <maven.compiler.source>23</maven.compiler.source>
