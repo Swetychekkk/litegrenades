@@ -10,6 +10,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
@@ -112,6 +113,16 @@ public class configCommandHandler implements CommandExecutor {
             grenadeMeta.getPersistentDataContainer().set(uniqueId, PersistentDataType.BOOLEAN, true);
             grenadeItem.setItemMeta(grenadeMeta);
             player.getInventory().addItem(grenadeItem);
+        } else if (Objects.equals(type, "lightgrenades:radioactive")) {
+            //RAD GRENADE
+            ItemStack radGrenade = new ItemStack(Material.GREEN_CANDLE, number);
+            ItemMeta radGrenadeMeta = radGrenade.getItemMeta();
+
+            NamespacedKey uniqueRadId = new NamespacedKey(Main.getInstance(), "is_tnt_grenade");
+            radGrenadeMeta.setDisplayName(ChatColor.GREEN + "Atomic Grenade");
+            radGrenadeMeta.getPersistentDataContainer().set(uniqueRadId, PersistentDataType.BOOLEAN, true);
+            radGrenade.setItemMeta(radGrenadeMeta);
+            player.getInventory().addItem(radGrenade);
         }
     }
 

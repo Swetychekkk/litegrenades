@@ -5,6 +5,8 @@ tnt_timer: 80
 
 rad_grenade:
   range_modifier: 1.2
+  cloud_time: 200
+  effect_time: 200
 
 crafts:
   grenade_tier_one:

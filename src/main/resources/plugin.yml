@@ -1,5 +1,5 @@
 name: LiteGrenades
-version: 3.2
+version: 3.21
 api-version: 1.21.9
 main: net.swetychek.litegrenades.Main
 commands:

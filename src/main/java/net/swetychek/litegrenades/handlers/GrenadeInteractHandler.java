@@ -53,10 +53,10 @@ public class GrenadeInteractHandler implements Listener {
                         AreaEffectCloud cloud = (AreaEffectCloud) loc.getWorld().spawnEntity(cloudLoc, EntityType.AREA_EFFECT_CLOUD);
 
                         cloud.setRadius((float) (4.0F*multiplier*plugin.getConfig().getDouble("rad_grenade.range_modifier")));
-                        cloud.setDuration(200);
+                        cloud.setDuration(plugin.getConfig().getInt("rad_grenade.cloud_time"));
                         cloud.setColor(Color.GREEN);
 
-                        cloud.addCustomEffect(new PotionEffect(PotionEffectType.WITHER, 200, 8), true);
+                        cloud.addCustomEffect(new PotionEffect(PotionEffectType.WITHER, plugin.getConfig().getInt("rad_grenade.effect_time"), 8), true);
                     }
                 }
             }
