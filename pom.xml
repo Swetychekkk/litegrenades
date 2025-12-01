@@ -6,11 +6,11 @@
 
     <groupId>net.swetychek.litegrenades</groupId>
     <artifactId>LiteGrenades</artifactId>
-    <version>3.21(1.21.X)</version>
+    <version>3.21(1.21.X)J21</version>
 
     <properties>
-        <maven.compiler.source>23</maven.compiler.source>
-        <maven.compiler.target>23</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
